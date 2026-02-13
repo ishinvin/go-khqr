@@ -15,5 +15,8 @@ test:
 lint:
 	golangci-lint run ./...
 
+# Run linter and tests
+check: lint test
+
 # Setup development environment
 setup: tools hooks

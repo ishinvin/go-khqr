@@ -13,3 +13,6 @@ pre-push:
     - name: lint
       glob: "*.go"
       run: golangci-lint run ./...
+    - name: test
+      glob: "*.go"
+      run: go test -race -count=1 ./...

@@ -58,7 +58,7 @@ var (
 	ErrAcquiringBankTooLong  = &Error{Code: 33, Message: "Acquiring Bank Length is invalid"}
 	ErrMobileNumberTooLong   = &Error{Code: 34, Message: "Mobile Number Length is invalid"}
 	// ErrTagNotInOrder                  = &Error{Code: 35, Message: "Tag is not in order"}
-	ErrAccountInformationTooLong      = &Error{Code: 36, Message: "Account Information Length is invalid"}
+	ErrAccountInfoTooLong             = &Error{Code: 36, Message: "Account Information Length is invalid"}
 	ErrLanguagePreferenceRequired     = &Error{Code: 37, Message: "Language Preference cannot be null or empty"}
 	ErrLanguagePreferenceTooLong      = &Error{Code: 38, Message: "Language Preference Length is invalid"}
 	ErrMerchantNameAltRequired        = &Error{Code: 39, Message: "Merchant Name Alternate Language cannot be null or empty"}
