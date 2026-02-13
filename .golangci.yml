@@ -1,0 +1,149 @@
+# https://github.com/golangci/golangci-lint/blob/main/.golangci.yml
+# https://golangci-lint.run/docs/welcome/integrations/#visual-studio-code
+
+version: "2"
+
+linters:
+  default: none
+  enable:
+    # Error Handling & Detection
+    - errcheck # checks for unchecked errors
+    - errorlint # finds issues with error wrapping
+    - govet # reports suspicious constructs
+    - staticcheck # comprehensive static analysis
+    - ineffassign # detects ineffectual assignments
+
+    # Code Style & Formatting
+    - whitespace # detects leading and trailing whitespace
+    - lll # reports long lines
+    - misspell # finds commonly misspelled words
+    - revive # fast, configurable linter
+
+    # Code Complexity & Duplication
+    - funlen # detects long functions
+    - gocyclo # computes cyclomatic complexity
+    - goconst # finds repeated strings that could be constants
+    - dupl # detects code duplication
+    - mnd # magic number detector
+
+    # Code Quality & Best Practices
+    - bodyclose # checks HTTP response body is closed
+    - noctx # finds HTTP requests without context
+    - nakedret # finds naked returns in long functions
+    - unparam # reports unused function parameters
+    - unused # finds unused constants, variables, functions, types
+    - unconvert # removes unnecessary type conversions
+    - dogsled # checks for too many blank identifiers
+    - goprintffuncname # checks printf-like function names end with f
+    #- gochecknoinits # checks no init functions
+
+    # Security
+    - gosec # inspects source code for security problems
+
+    # Testing
+    - testifylint # checks usage of testify
+
+    # Loops
+    - copyloopvar # detects loop variable copies (Go 1.22+)
+    - intrange # finds integer ranges that could use range
+
+    # Comments & Directives
+    - godox # detects FIXME, TODO, etc.
+    - nolintlint # reports ill-formed nolint directives
+    - gocheckcompilerdirectives # validates //go: directives
+
+    # Static Analysis
+    - gocritic # highly extensible Go source code linter
+
+  settings:
+    dupl:
+      threshold: 100
+    funlen:
+      lines: -1 # the number of lines (code + empty lines) is not a right metric
+      statements: 50
+    goconst:
+      min-len: 2
+      min-occurrences: 3
+    gocritic:
+      enabled-tags:
+        - diagnostic
+        - experimental
+        - opinionated
+        - performance
+        - style
+      disabled-checks:
+        - dupImport # https://github.com/go-critic/go-critic/issues/845
+        - ifElseChain
+        - octalLiteral
+        - whyNoLint
+    gocyclo:
+      min-complexity: 15
+    godox:
+      keywords:
+        - FIXME
+    mnd:
+      # don't include the "operation" and "assign"
+      checks:
+        - argument
+        - case
+        - condition
+        - return
+      ignored-numbers:
+        - "0"
+        - "1"
+        - "2"
+        - "3"
+      ignored-functions:
+        - strings.SplitN
+    govet:
+      enable:
+        - nilness
+        - shadow
+    errorlint:
+      asserts: false
+    lll:
+      line-length: 150
+    misspell:
+      locale: US
+    nolintlint:
+      allow-unused: false # report any unused nolint directives
+      require-explanation: true # require an explanation for nolint directives
+      require-specific: true # require nolint directives to be specific about which linter is being skipped
+    revive:
+      rules:
+        - name: indent-error-flow
+        - name: unexported-return
+          disabled: true
+        - name: unused-parameter
+        - name: unused-receiver
+
+  exclusions:
+    presets:
+      - comments
+      - std-error-handling
+      - common-false-positives
+      - legacy
+    rules:
+      # Relaxed rules for test files
+      - path: (.+)_test\.go
+        linters:
+          - dupl
+          - mnd
+          - lll
+      # Allow magic numbers in CLI config defaults
+      - path: cmd/
+        linters:
+          - mnd
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    gofmt:
+      rewrite-rules:
+        - pattern: "interface{}"
+          replacement: "any"
+    goimports:
+      local-prefixes:
+        - github.com/ishinvin/go-khqr
