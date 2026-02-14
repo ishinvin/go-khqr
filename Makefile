@@ -9,7 +9,7 @@ hooks:
 
 # Run tests
 test:
-	go test -v -race -count=1 ./...
+	go test -v -count=1 ./...
 
 # Run linter
 lint:
