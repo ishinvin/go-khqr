@@ -83,6 +83,7 @@ const (
 const (
 	defaultPayloadFormatIndicator = "01"
 	defaultMerchantCategoryCode   = "5999"
+	defaultMerchantCity           = "Phnom Penh"
 	defaultCountryCode            = "KH"
 	staticQR                      = "11"
 	dynamicQR                     = "12"
@@ -101,7 +102,7 @@ const (
 	maxPurposeLength         = 25
 	maxMerchantIDLength      = 32
 	maxAcquiringBankLength   = 32
-	maxUPILength             = 31
+	maxUPILength             = 99
 	maxMerchantNameAltLength = 25
 	maxMerchantCityAltLength = 15
 	languagePreferenceLength = 2
