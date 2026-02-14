@@ -1,6 +1,6 @@
-# go-khqr
+# KHQR SDK for Go
 
-Go SDK for generating, decoding, and verifying KHQR.
+Go SDK for generating, decoding, and verifying Bakong KHQR.
 
 ## Installation
 
