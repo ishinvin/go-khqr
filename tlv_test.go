@@ -32,17 +32,17 @@ func Test_parseTLV(t *testing.T) {
 	tests := []struct {
 		name string
 		data string
-		want []tlvEntry
+		want []tlv
 	}{
 		{
 			"single entry",
 			"0103abc",
-			[]tlvEntry{{Tag: "01", Value: "abc"}},
+			[]tlv{{Tag: "01", Value: "abc"}},
 		},
 		{
 			"multiple entries",
 			"0103abc" + "0202hi" + "0301X",
-			[]tlvEntry{
+			[]tlv{
 				{Tag: "01", Value: "abc"},
 				{Tag: "02", Value: "hi"},
 				{Tag: "03", Value: "X"},
@@ -51,7 +51,7 @@ func Test_parseTLV(t *testing.T) {
 		{
 			"empty value",
 			"0100",
-			[]tlvEntry{{Tag: "01", Value: ""}},
+			[]tlv{{Tag: "01", Value: ""}},
 		},
 	}
 
@@ -90,5 +90,39 @@ func Test_parseTLV_invalid(t *testing.T) {
 				t.Errorf("got %v, want ErrInvalidQR", err)
 			}
 		})
+	}
+}
+
+func Test_tlvWriter_writeTLV(t *testing.T) {
+	tests := []struct {
+		name  string
+		tag   string
+		value string
+		want  string
+	}{
+		{"non-empty value writes TLV", "01", "abc", "0103abc"},
+		{"empty value writes nothing", "01", "", ""},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			var w tlvWriter
+			w.writeTLV(tt.tag, tt.value)
+			if got := w.String(); got != tt.want {
+				t.Errorf("writeTLV(%q, %q): got %q, want %q", tt.tag, tt.value, got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_tlvWriter_writeTLV_multiple(t *testing.T) {
+	var w tlvWriter
+	w.writeTLV("01", "a")
+	w.writeTLV("02", "")
+	w.writeTLV("03", "bc")
+
+	want := "0101a" + "0302bc"
+	if got := w.String(); got != want {
+		t.Errorf("got %q, want %q", got, want)
 	}
 }

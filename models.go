@@ -7,46 +7,60 @@ import (
 
 // IndividualInfo contains information for generating an individual KHQR code.
 type IndividualInfo struct {
-	BakongAccountID       string
-	Currency              Currency // default KHR
-	Amount                float64  // 0 means no amount (static QR)
-	MerchantName          string
-	MerchantCity          string
-	AcquiringBank         string // optional
-	AccountInfo           string // optional
-	UPIAccountInfo        string // optional
-	BillNumber            string // optional
-	StoreLabel            string // optional
-	TerminalLabel         string // optional
-	MobileNumber          string // optional
-	Purpose               string // optional
-	AltLanguagePreference string // optional
-	AltMerchantName       string // optional
-	AltMerchantCity       string // optional
-	ExpirationTimestamp   int64  // unix ms, required if Amount > 0
-	MerchantCategoryCode  string // optional, defaults to "5999"
+	// Required fields.
+	BakongAccountID string // must contain "@" (e.g. "user@bank")
+	MerchantName    string // max 25 characters
+
+	// Optional fields with defaults.
+	Currency             Currency // defaults to KHR
+	MerchantCity         string   // defaults to "Phnom Penh", max 15 characters
+	MerchantCategoryCode string   // defaults to "5999"
+
+	// Optional fields (dynamic QR).
+	Amount              float64 // 0 means static QR; KHR must be whole, USD up to 2 decimals
+	ExpirationTimestamp int64   // unix ms, required when Amount > 0
+
+	// Optional fields.
+	AcquiringBank         string // max 32 characters
+	AccountInfo           string // max 32 characters
+	UPIAccountInfo        string // not supported with USD, max 99 characters
+	BillNumber            string // max 25 characters
+	StoreLabel            string // max 25 characters
+	TerminalLabel         string // max 25 characters
+	MobileNumber          string // max 25 characters
+	Purpose               string // max 25 characters
+	AltLanguagePreference string // ISO 639-1 (2 chars); requires AltMerchantName
+	AltMerchantName       string // required when AltLanguagePreference is set, max 25 characters
+	AltMerchantCity       string // max 15 characters
 }
 
 // MerchantInfo contains information for generating a merchant KHQR code.
 type MerchantInfo struct {
-	BakongAccountID       string
-	Currency              Currency // default KHR
-	Amount                float64  // 0 means no amount (static QR)
-	MerchantName          string
-	MerchantCity          string
-	MerchantID            string // required
-	AcquiringBank         string // required
-	UPIAccountInfo        string // optional
-	BillNumber            string // optional
-	StoreLabel            string // optional
-	TerminalLabel         string // optional
-	MobileNumber          string // optional
-	Purpose               string // optional
-	AltLanguagePreference string // optional
-	AltMerchantName       string // optional
-	AltMerchantCity       string // optional
-	ExpirationTimestamp   int64  // unix ms, required if Amount > 0
-	MerchantCategoryCode  string // optional, defaults to "5999"
+	// Required fields.
+	BakongAccountID string // must contain "@" (e.g. "merchant@bank")
+	MerchantName    string // max 25 characters
+	MerchantCity    string // max 15 characters
+	MerchantID      string // max 32 characters
+	AcquiringBank   string // max 32 characters
+
+	// Optional fields with defaults.
+	Currency             Currency // defaults to KHR
+	MerchantCategoryCode string   // defaults to "5999"
+
+	// Optional fields (dynamic QR).
+	Amount              float64 // 0 means static QR; KHR must be whole, USD up to 2 decimals
+	ExpirationTimestamp int64   // unix ms, required when Amount > 0
+
+	// Optional fields.
+	UPIAccountInfo        string // not supported with USD, max 99 characters
+	BillNumber            string // max 25 characters
+	StoreLabel            string // max 25 characters
+	TerminalLabel         string // max 25 characters
+	MobileNumber          string // max 25 characters
+	Purpose               string // max 25 characters
+	AltLanguagePreference string // ISO 639-1 (2 chars); requires AltMerchantName
+	AltMerchantName       string // required when AltLanguagePreference is set, max 25 characters
+	AltMerchantCity       string // max 15 characters
 }
 
 // Data contains the generated QR string.

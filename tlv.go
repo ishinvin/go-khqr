@@ -2,13 +2,27 @@ package khqr
 
 import (
 	"strconv"
+	"strings"
 	"unicode/utf8"
 )
 
-// tlvEntry represents a single Tag-Length-Value entry.
-type tlvEntry struct {
+// tlv represents a single Tag-Length-Value entry.
+type tlv struct {
 	Tag   string
 	Value string
+}
+
+// tlvWriter wraps strings.Builder with a helper for conditional TLV encoding.
+type tlvWriter struct {
+	strings.Builder
+}
+
+// writeTLV encodes a tag-value pair and writes it to the builder.
+// If value is empty, nothing is written.
+func (w *tlvWriter) writeTLV(tag, value string) {
+	if value != "" {
+		w.WriteString(encodeTLV(tag, value))
+	}
 }
 
 // encodeTLV encodes a tag and value into a TLV string.
@@ -24,8 +38,8 @@ func encodeTLV(tag, value string) string {
 
 // parseTLV parses a TLV-encoded string into an ordered list of entries.
 // The length field is interpreted as a rune count (Unicode characters).
-func parseTLV(data string) ([]tlvEntry, error) {
-	var entries []tlvEntry
+func parseTLV(data string) ([]tlv, error) {
+	var entries []tlv
 	runes := []rune(data)
 	pos := 0
 
@@ -52,7 +66,7 @@ func parseTLV(data string) ([]tlvEntry, error) {
 		value := string(runes[pos : pos+length])
 		pos += length
 
-		entries = append(entries, tlvEntry{Tag: tag, Value: value})
+		entries = append(entries, tlv{Tag: tag, Value: value})
 	}
 
 	return entries, nil
