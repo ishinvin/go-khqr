@@ -5,42 +5,46 @@ import (
 	"testing"
 )
 
-func Test_encodeTLV(t *testing.T) {
+func TestEncodeTLV(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name  string
 		tag   string
 		value string
 		want  string
 	}{
-		{"empty value", "00", "", "0000"},
-		{"single char", "01", "A", "0101A"},
-		{"single digit length", "02", "hi", "0202hi"},
-		{"double digit length", "03", "0123456789", "03100123456789"},
+		{"empty_value", "00", "", "0000"},
+		{"single_char", "01", "A", "0101A"},
+		{"single_digit_length", "02", "hi", "0202hi"},
+		{"double_digit_length", "03", "0123456789", "03100123456789"},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			got := encodeTLV(tt.tag, tt.value)
 			if got != tt.want {
-				t.Errorf("encodeTLV(%q, %q): got %q, want %q", tt.tag, tt.value, got, tt.want)
+				t.Errorf("encodeTLV(%q, %q) = %q, want %q", tt.tag, tt.value, got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_parseTLV(t *testing.T) {
+func TestParseTLV(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name string
 		data string
 		want []tlv
 	}{
 		{
-			"single entry",
+			"single_entry",
 			"0103abc",
 			[]tlv{{Tag: "01", Value: "abc"}},
 		},
 		{
-			"multiple entries",
+			"multiple_entries",
 			"0103abc" + "0202hi" + "0301X",
 			[]tlv{
 				{Tag: "01", Value: "abc"},
@@ -49,14 +53,14 @@ func Test_parseTLV(t *testing.T) {
 			},
 		},
 		{
-			"empty value",
+			"empty_value",
 			"0100",
 			[]tlv{{Tag: "01", Value: ""}},
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			got, err := parseTLV(tt.data)
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
@@ -73,49 +77,55 @@ func Test_parseTLV(t *testing.T) {
 	}
 }
 
-func Test_parseTLV_invalid(t *testing.T) {
+func TestParseTLVInvalid(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name string
 		data string
 	}{
-		{"truncated header", "01"},
-		{"non-numeric length", "01XXa"},
-		{"length exceeds data", "0105ab"},
+		{"truncated_header", "01"},
+		{"non_numeric_length", "01XXa"},
+		{"length_exceeds_data", "0105ab"},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			_, err := parseTLV(tt.data)
 			if !errors.Is(err, ErrInvalidQR) {
-				t.Errorf("got %v, want ErrInvalidQR", err)
+				t.Errorf("parseTLV(%q) = %v, want ErrInvalidQR", tt.data, err)
 			}
 		})
 	}
 }
 
-func Test_tlvWriter_writeTLV(t *testing.T) {
+func TestTLVWriterWriteTLV(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name  string
 		tag   string
 		value string
 		want  string
 	}{
-		{"non-empty value writes TLV", "01", "abc", "0103abc"},
-		{"empty value writes nothing", "01", "", ""},
+		{"non_empty_value", "01", "abc", "0103abc"},
+		{"empty_value", "01", "", ""},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			var w tlvWriter
 			w.writeTLV(tt.tag, tt.value)
 			if got := w.String(); got != tt.want {
-				t.Errorf("writeTLV(%q, %q): got %q, want %q", tt.tag, tt.value, got, tt.want)
+				t.Errorf("writeTLV(%q, %q) = %q, want %q", tt.tag, tt.value, got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_tlvWriter_writeTLV_multiple(t *testing.T) {
+func TestTLVWriterWriteTLVMultiple(t *testing.T) {
+	t.Parallel()
+
 	var w tlvWriter
 	w.writeTLV("01", "a")
 	w.writeTLV("02", "")
