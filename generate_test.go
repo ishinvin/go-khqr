@@ -16,12 +16,12 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 
 	tests := []struct {
 		name string
-		info *IndividualInfo
+		info IndividualInfo
 		want string // full expected QR from Java SDK; dynamic suffix will be stripped
 	}{
 		{
 			"USD_amount_1",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:     "jonhsmith@nbcq",
 				MerchantName:        "Jonh Smith",
 				MerchantCity:        "PHNOM PENH",
@@ -34,7 +34,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"KHR_amount_50000_mobile",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:     "jonhsmith@nbcq",
 				MerchantName:        "Jonh Smith",
 				Currency:            KHR,
@@ -46,7 +46,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"KHR_default_currency_store_label",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:     "jonhsmith@nbcq",
 				MerchantName:        "Jonh Smith",
 				Amount:              50000,
@@ -57,7 +57,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"KHR_all_additional_data",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:     "jonhsmith@nbcq",
 				MerchantName:        "Jonh Smith",
 				MerchantCity:        "Siam Reap",
@@ -73,7 +73,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"KHR_with_account_info_and_bank",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:     "jonhsmith@nbcq",
 				AccountInfo:         "012345678",
 				AcquiringBank:       "Dev Bank",
@@ -91,7 +91,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"KHR_with_bank_only",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:     "jonhsmith@nbcq",
 				AcquiringBank:       "Dev Bank",
 				MerchantName:        "Jonh Smith",
@@ -108,7 +108,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"KHR_with_account_info_only",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:     "jonhsmith@nbcq",
 				AccountInfo:         "012345678",
 				MerchantName:        "Jonh Smith",
@@ -125,7 +125,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"KHR_amount_100",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:     "jonhsmith@nbcq",
 				AccountInfo:         "012345678",
 				AcquiringBank:       "Dev Bank",
@@ -143,7 +143,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"KHR_khmer_merchant_name",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:     "jonhsmith@nbcq",
 				AccountInfo:         "012345678",
 				AcquiringBank:       "Dev Bank",
@@ -161,7 +161,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"static_with_mobile_and_purpose",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "jonhsmith@nbcq",
 				MerchantName:    "Jonh Smith",
 				MobileNumber:    "85512345678",
@@ -171,7 +171,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"static_with_alt_language_full",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:       "jonhsmith@nbcq",
 				MerchantName:          "Jonh Smith",
 				MerchantCity:          "Siam Reap",
@@ -183,7 +183,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"static_with_alt_language_name_only",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:       "jonhsmith@nbcq",
 				MerchantName:          "Jonh Smith",
 				AltLanguagePreference: "km",
@@ -193,7 +193,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"static_with_upi",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "jonhsmith@nbcq",
 				MerchantName:    "Jonh Smith",
 				UPIAccountInfo:  "12345678123456789012345",
@@ -202,7 +202,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"static_with_all_account_fields",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "jonhsmith@nbcq",
 				AccountInfo:     "012345678",
 				AcquiringBank:   "Dev Bank",
@@ -217,7 +217,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"USD_amount_0.5",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:     "jonhsmith@nbcq",
 				MerchantName:        "Jonh Smith",
 				Currency:            USD,
@@ -228,7 +228,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"USD_amount_0.55",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:     "jonhsmith@nbcq",
 				MerchantName:        "Jonh Smith",
 				Currency:            USD,
@@ -239,7 +239,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"static_max_mobile_number",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "jonhsmith@nbcq",
 				MerchantName:    "Jonh Smith",
 				MobileNumber:    "0123456789012345678901234",
@@ -248,7 +248,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"static_category_code_0000",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:      "jonhsmith@nbcq",
 				MerchantName:         "Jonh Smith",
 				MerchantCategoryCode: "0000",
@@ -257,7 +257,7 @@ func TestGenerateIndividualSuccess(t *testing.T) {
 		},
 		{
 			"static_category_code_1234",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:      "jonhsmith@nbcq",
 				MerchantName:         "Jonh Smith",
 				MerchantCategoryCode: "1234",
@@ -296,12 +296,12 @@ func TestGenerateMerchantSuccess(t *testing.T) {
 
 	tests := []struct {
 		name string
-		info *MerchantInfo
+		info MerchantInfo
 		want string
 	}{
 		{
 			"KHR_all_additional_data",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:     "jonhsmith@devb",
 				MerchantID:          "123456",
 				AcquiringBank:       "Dev Bank",
@@ -319,7 +319,7 @@ func TestGenerateMerchantSuccess(t *testing.T) {
 		},
 		{
 			"USD_with_store_label",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:     "jonhsmith@devb",
 				MerchantID:          "123456",
 				AcquiringBank:       "Dev Bank",
@@ -336,7 +336,7 @@ func TestGenerateMerchantSuccess(t *testing.T) {
 		},
 		{
 			"USD_bill_and_mobile",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:     "jonhsmith@devb",
 				MerchantID:          "123456",
 				AcquiringBank:       "Dev Bank",
@@ -352,7 +352,7 @@ func TestGenerateMerchantSuccess(t *testing.T) {
 		},
 		{
 			"USD_bill_only",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:     "jonhsmith@devb",
 				MerchantID:          "123456",
 				AcquiringBank:       "Dev Bank",
@@ -367,7 +367,7 @@ func TestGenerateMerchantSuccess(t *testing.T) {
 		},
 		{
 			"USD_no_additional_data",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:     "jonhsmith@devb",
 				MerchantID:          "123456",
 				AcquiringBank:       "Dev Bank",
@@ -381,7 +381,7 @@ func TestGenerateMerchantSuccess(t *testing.T) {
 		},
 		{
 			"static_USD_no_amount",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "jonhsmith@devb",
 				MerchantID:      "123456",
 				AcquiringBank:   "Dev Bank",
@@ -393,7 +393,7 @@ func TestGenerateMerchantSuccess(t *testing.T) {
 		},
 		{
 			"USD_khmer_name",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:     "jonhsmith@devb",
 				MerchantID:          "123456",
 				AcquiringBank:       "Dev Bank",
@@ -407,7 +407,7 @@ func TestGenerateMerchantSuccess(t *testing.T) {
 		},
 		{
 			"static_with_purpose",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "jonhsmith@nbcq",
 				MerchantID:      "123456",
 				AcquiringBank:   "Dev Bank",
@@ -419,7 +419,7 @@ func TestGenerateMerchantSuccess(t *testing.T) {
 		},
 		{
 			"static_with_alt_language_full",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:       "jonhsmith@nbcq",
 				MerchantID:            "123456",
 				AcquiringBank:         "Dev Bank",
@@ -433,7 +433,7 @@ func TestGenerateMerchantSuccess(t *testing.T) {
 		},
 		{
 			"static_with_alt_language_name_only",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:       "jonhsmith@nbcq",
 				MerchantID:            "123456",
 				AcquiringBank:         "Dev Bank",
@@ -446,7 +446,7 @@ func TestGenerateMerchantSuccess(t *testing.T) {
 		},
 		{
 			"static_with_upi",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "jonhsmith@nbcq",
 				MerchantID:      "123456",
 				AcquiringBank:   "Dev Bank",
@@ -458,7 +458,7 @@ func TestGenerateMerchantSuccess(t *testing.T) {
 		},
 		{
 			"static_category_code_0000",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:      "jonhsmith@nbcq",
 				MerchantID:           "123456",
 				AcquiringBank:        "Dev Bank",
@@ -470,7 +470,7 @@ func TestGenerateMerchantSuccess(t *testing.T) {
 		},
 		{
 			"static_category_code_1234",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:      "jonhsmith@nbcq",
 				MerchantID:           "123456",
 				AcquiringBank:        "Dev Bank",
@@ -512,22 +512,22 @@ func TestGenerateIndividualRequiredError(t *testing.T) {
 
 	tests := []struct {
 		name    string
-		info    *IndividualInfo
+		info    IndividualInfo
 		wantErr error
 	}{
 		{
 			"missing_account_id",
-			&IndividualInfo{MerchantName: "Jonh Smith"},
+			IndividualInfo{MerchantName: "Jonh Smith"},
 			ErrAccountIDRequired,
 		},
 		{
 			"missing_merchant_name",
-			&IndividualInfo{BakongAccountID: "johnsmith@devb"},
+			IndividualInfo{BakongAccountID: "johnsmith@devb"},
 			ErrMerchantNameRequired,
 		},
 		{
 			"missing_language_preference_with_alt_name_and_city",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				AltMerchantName: "ចន ស្មីន",
@@ -537,7 +537,7 @@ func TestGenerateIndividualRequiredError(t *testing.T) {
 		},
 		{
 			"missing_alt_merchant_name",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:       "johnsmith@devb",
 				MerchantName:          "Jonh Smith",
 				AltLanguagePreference: "km",
@@ -547,7 +547,7 @@ func TestGenerateIndividualRequiredError(t *testing.T) {
 		},
 		{
 			"missing_language_preference_with_alt_city_only",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				AltMerchantCity: "សៀមរាប",
@@ -556,7 +556,7 @@ func TestGenerateIndividualRequiredError(t *testing.T) {
 		},
 		{
 			"missing_expiration_with_amount",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				Currency:        KHR,
@@ -566,7 +566,7 @@ func TestGenerateIndividualRequiredError(t *testing.T) {
 		},
 		{
 			"expiration_in_past",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:     "johnsmith@devb",
 				MerchantName:        "Jonh Smith",
 				Currency:            USD,
@@ -577,7 +577,7 @@ func TestGenerateIndividualRequiredError(t *testing.T) {
 		},
 		{
 			"expiration_invalid_length",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:     "johnsmith@devb",
 				MerchantName:        "Jonh Smith",
 				Currency:            USD,
@@ -606,12 +606,12 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 
 	tests := []struct {
 		name    string
-		info    *IndividualInfo
+		info    IndividualInfo
 		wantErr error
 	}{
 		{
 			"account_id_too_long",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "@johnsmith00123456789012345678912345@devb",
 				MerchantName:    "Jonh Smith",
 				Currency:        USD,
@@ -620,7 +620,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"merchant_name_too_long",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "012345678901234567890123456789",
 				Currency:        USD,
@@ -629,7 +629,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"amount_too_large",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				Currency:        USD,
@@ -639,7 +639,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"merchant_city_too_long",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				MerchantCity:    "012345678901234567890123456789",
@@ -650,7 +650,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"bill_number_too_long",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				MerchantCity:    "PP",
@@ -662,7 +662,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"mobile_number_too_long",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				MerchantCity:    "PP",
@@ -674,7 +674,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"store_label_too_long",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				MerchantCity:    "PP",
@@ -686,7 +686,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"terminal_label_too_long",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				MerchantCity:    "PP",
@@ -698,7 +698,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"acquiring_bank_too_long",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				AcquiringBank:   "Advanced Bank of Asia Limited Cambodia",
 				MerchantName:    "ABC",
@@ -710,7 +710,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"account_info_too_long",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				AccountInfo:     "012345678901234567890123456789897",
 				MerchantName:    "ABC",
@@ -721,7 +721,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"usd_three_decimal_places",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "ABC",
 				Currency:        USD,
@@ -731,7 +731,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"upi_too_long",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "ABC",
 				Currency:        KHR,
@@ -742,7 +742,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"language_preference_too_long",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:       "johnsmith@devb",
 				MerchantName:          "ABC",
 				Currency:              USD,
@@ -753,7 +753,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"merchant_name_alt_too_long",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:       "johnsmith@devb",
 				MerchantName:          "ABC",
 				Currency:              USD,
@@ -765,7 +765,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"merchant_city_alt_too_long",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:       "johnsmith@devb",
 				MerchantName:          "ABC",
 				Currency:              USD,
@@ -778,7 +778,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"purpose_too_long",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "ABC",
 				Currency:        USD,
@@ -789,7 +789,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"invalid_merchant_category_code_non_numeric",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:      "johnsmith@devb",
 				MerchantName:         "Jonh Smith",
 				Currency:             USD,
@@ -799,7 +799,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"upi_not_supported_with_usd",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "ABC",
 				Currency:        USD,
@@ -809,7 +809,7 @@ func TestGenerateIndividualLengthError(t *testing.T) {
 		},
 		{
 			"invalid_merchant_category_code_negative",
-			&IndividualInfo{
+			IndividualInfo{
 				BakongAccountID:      "johnsmith@devb",
 				MerchantName:         "Jonh Smith",
 				Currency:             USD,
@@ -837,17 +837,17 @@ func TestGenerateMerchantRequiredError(t *testing.T) {
 
 	tests := []struct {
 		name    string
-		info    *MerchantInfo
+		info    MerchantInfo
 		wantErr error
 	}{
 		{
 			"missing_account_id",
-			&MerchantInfo{},
+			MerchantInfo{},
 			ErrAccountIDRequired,
 		},
 		{
 			"missing_merchant_id",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 			},
@@ -855,7 +855,7 @@ func TestGenerateMerchantRequiredError(t *testing.T) {
 		},
 		{
 			"missing_acquiring_bank",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				MerchantID:      "12345",
@@ -864,7 +864,7 @@ func TestGenerateMerchantRequiredError(t *testing.T) {
 		},
 		{
 			"missing_merchant_name",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantID:      "12345",
 				AcquiringBank:   "ABA",
@@ -874,7 +874,7 @@ func TestGenerateMerchantRequiredError(t *testing.T) {
 		},
 		{
 			"missing_merchant_id_with_bank",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				AcquiringBank:   "Dev Bank",
@@ -883,7 +883,7 @@ func TestGenerateMerchantRequiredError(t *testing.T) {
 		},
 		{
 			"missing_acquiring_bank_with_id",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				MerchantID:      "123456",
@@ -892,7 +892,7 @@ func TestGenerateMerchantRequiredError(t *testing.T) {
 		},
 		{
 			"missing_language_preference_with_alt_name_and_city",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				MerchantID:      "123456",
@@ -905,7 +905,7 @@ func TestGenerateMerchantRequiredError(t *testing.T) {
 		},
 		{
 			"missing_language_preference_with_alt_city_only",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				MerchantID:      "123456",
@@ -917,7 +917,7 @@ func TestGenerateMerchantRequiredError(t *testing.T) {
 		},
 		{
 			"missing_alt_merchant_name",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:       "johnsmith@devb",
 				MerchantName:          "Jonh Smith",
 				MerchantID:            "123456",
@@ -930,7 +930,7 @@ func TestGenerateMerchantRequiredError(t *testing.T) {
 		},
 		{
 			"missing_expiration_with_amount",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				MerchantID:      "123456",
@@ -943,7 +943,7 @@ func TestGenerateMerchantRequiredError(t *testing.T) {
 		},
 		{
 			"expiration_in_past",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:     "johnsmith@devb",
 				MerchantName:        "Jonh Smith",
 				MerchantID:          "123456",
@@ -957,7 +957,7 @@ func TestGenerateMerchantRequiredError(t *testing.T) {
 		},
 		{
 			"expiration_invalid_length",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:     "johnsmith@devb",
 				MerchantName:        "Jonh Smith",
 				MerchantID:          "123456",
@@ -989,12 +989,12 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 
 	tests := []struct {
 		name    string
-		info    *MerchantInfo
+		info    MerchantInfo
 		wantErr error
 	}{
 		{
 			"account_id_too_long",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith00123456789012345678912345@devb",
 				MerchantName:    "Jonh Smith",
 				MerchantCity:    "Phnom Penh",
@@ -1004,7 +1004,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"merchant_id_too_long",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantID:      "ohnsmith001234567890123456789123450123456",
 				MerchantName:    "Jonh Smith",
@@ -1015,7 +1015,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"acquiring_bank_too_long",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantID:      "123",
 				AcquiringBank:   "ohnsmith001234567890123456789123450123456",
@@ -1027,7 +1027,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"merchant_name_too_long",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantID:      "123",
 				AcquiringBank:   "Dev Bank",
@@ -1039,7 +1039,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"amount_too_large",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantID:      "123",
 				AcquiringBank:   "Dev Bank",
@@ -1052,7 +1052,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"merchant_city_too_long",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantID:      "123",
 				AcquiringBank:   "Dev Bank",
@@ -1065,7 +1065,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"bill_number_too_long",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantID:      "123",
 				AcquiringBank:   "Dev Bank",
@@ -1079,7 +1079,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"mobile_number_too_long",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantID:      "123",
 				AcquiringBank:   "Dev Bank",
@@ -1094,7 +1094,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"store_label_too_long",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantID:      "123",
 				AcquiringBank:   "Dev Bank",
@@ -1110,7 +1110,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"terminal_label_too_long",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantID:      "123",
 				AcquiringBank:   "Dev Bank",
@@ -1127,7 +1127,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"upi_too_long",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantID:      "123456",
 				AcquiringBank:   "Dev Bank",
@@ -1141,7 +1141,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"language_preference_too_long",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:       "johnsmith@devb",
 				MerchantID:            "123456",
 				AcquiringBank:         "Dev Bank",
@@ -1155,7 +1155,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"merchant_name_alt_too_long",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:       "johnsmith@devb",
 				MerchantID:            "123456",
 				AcquiringBank:         "Dev Bank",
@@ -1170,7 +1170,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"merchant_city_alt_too_long",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:       "johnsmith@devb",
 				MerchantID:            "123456",
 				AcquiringBank:         "Dev Bank",
@@ -1186,7 +1186,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"purpose_too_long",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantID:      "123456",
 				AcquiringBank:   "Dev Bank",
@@ -1200,7 +1200,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"invalid_merchant_category_code_non_numeric",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:      "johnsmith@devb",
 				MerchantID:           "123456",
 				AcquiringBank:        "Dev Bank",
@@ -1213,7 +1213,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"upi_not_supported_with_usd",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantID:      "123456",
 				AcquiringBank:   "Dev Bank",
@@ -1227,7 +1227,7 @@ func TestGenerateMerchantLengthError(t *testing.T) {
 		},
 		{
 			"invalid_merchant_category_code_negative",
-			&MerchantInfo{
+			MerchantInfo{
 				BakongAccountID:      "johnsmith@devb",
 				MerchantID:           "123456",
 				AcquiringBank:        "Dev Bank",
@@ -1276,7 +1276,7 @@ func TestInvalidAmountIndividual(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			_, err := GenerateIndividual(&IndividualInfo{
+			_, err := GenerateIndividual(IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				Currency:        tt.currency,
@@ -1311,7 +1311,7 @@ func TestInvalidAmountMerchant(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			_, err := GenerateMerchant(&MerchantInfo{
+			_, err := GenerateMerchant(MerchantInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				MerchantID:      "123456",
@@ -1355,7 +1355,7 @@ func TestExactAmountIndividual(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			data, err := GenerateIndividual(&IndividualInfo{
+			data, err := GenerateIndividual(IndividualInfo{
 				BakongAccountID:     "johnsmith@devb",
 				AccountInfo:         "012345678",
 				AcquiringBank:       "Dev Bank",
@@ -1404,7 +1404,7 @@ func TestExactAmountMerchant(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			data, err := GenerateMerchant(&MerchantInfo{
+			data, err := GenerateMerchant(MerchantInfo{
 				BakongAccountID:     "johnsmith@devb",
 				MerchantID:          "0123456",
 				AcquiringBank:       "Dev Bank",
@@ -1456,7 +1456,7 @@ func TestValidAmount(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			_, err := GenerateIndividual(&IndividualInfo{
+			_, err := GenerateIndividual(IndividualInfo{
 				BakongAccountID:     "johnsmith@devb",
 				MerchantName:        "Jonh Smith",
 				Currency:            tt.currency,
@@ -1491,7 +1491,7 @@ func TestInvalidBakongAccountID(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			_, err := GenerateIndividual(&IndividualInfo{
+			_, err := GenerateIndividual(IndividualInfo{
 				BakongAccountID: tt.accountID,
 				MerchantName:    "Jonh Smith",
 			})
@@ -1533,7 +1533,7 @@ func TestAdditionalDataTagAssignment(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			data, err := GenerateIndividual(&IndividualInfo{
+			data, err := GenerateIndividual(IndividualInfo{
 				BakongAccountID: "johnsmith@devb",
 				MerchantName:    "Jonh Smith",
 				BillNumber:      tt.billNumber,

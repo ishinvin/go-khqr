@@ -3,13 +3,13 @@
 package khqr
 
 // GenerateIndividual generates a KHQR string for an individual payment.
-func GenerateIndividual(info *IndividualInfo) (*Data, error) {
-	return generateIndividual(info)
+func GenerateIndividual(info IndividualInfo) (*Data, error) { //nolint:gocritic // value param creates shallow copy to avoid mutating caller's struct
+	return generateIndividual(&info)
 }
 
 // GenerateMerchant generates a KHQR string for a merchant payment.
-func GenerateMerchant(info *MerchantInfo) (*Data, error) {
-	return generateMerchant(info)
+func GenerateMerchant(info MerchantInfo) (*Data, error) { //nolint:gocritic // value param creates shallow copy to avoid mutating caller's struct
+	return generateMerchant(&info)
 }
 
 // Decode parses a KHQR string and returns structured data.

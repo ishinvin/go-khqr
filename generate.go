@@ -103,86 +103,84 @@ func generate(p *qrParams) *Data {
 
 // generateIndividual builds a KHQR payload for an individual payment.
 func generateIndividual(info *IndividualInfo) (*Data, error) {
-	cp := *info // shallow copy to avoid mutating caller's struct
-	if cp.Currency == 0 {
-		cp.Currency = KHR
+	if info.Currency == 0 {
+		info.Currency = KHR
 	}
-	if cp.MerchantCategoryCode == "" {
-		cp.MerchantCategoryCode = defaultMerchantCategoryCode
+	if info.MerchantCategoryCode == "" {
+		info.MerchantCategoryCode = defaultMerchantCategoryCode
 	}
-	if cp.MerchantCity == "" {
-		cp.MerchantCity = defaultMerchantCity
+	if info.MerchantCity == "" {
+		info.MerchantCity = defaultMerchantCity
 	}
 
-	if err := cp.validate(); err != nil {
+	if err := info.validate(); err != nil {
 		return nil, err
 	}
 
 	// Build individual account subtags (tag 29)
 	var acc tlvWriter
-	acc.WriteString(encodeTLV(subtagGlobalID, cp.BakongAccountID))
-	acc.writeTLV(subtagAccountInfo, cp.AccountInfo)
-	acc.writeTLV(subtagAcquiringBank, cp.AcquiringBank)
+	acc.WriteString(encodeTLV(subtagGlobalID, info.BakongAccountID))
+	acc.writeTLV(subtagAccountInfo, info.AccountInfo)
+	acc.writeTLV(subtagAcquiringBank, info.AcquiringBank)
 
 	return generate(&qrParams{
 		accountTag:            tagIndividualAccount,
 		accountValue:          acc.String(),
-		merchantName:          cp.MerchantName,
-		merchantCity:          cp.MerchantCity,
-		categoryCode:          cp.MerchantCategoryCode,
-		currency:              cp.Currency,
-		amount:                cp.Amount,
-		expiration:            cp.ExpirationTimestamp,
-		upiAccountInfo:        cp.UPIAccountInfo,
-		billNumber:            cp.BillNumber,
-		mobileNumber:          cp.MobileNumber,
-		storeLabel:            cp.StoreLabel,
-		terminalLabel:         cp.TerminalLabel,
-		purpose:               cp.Purpose,
-		altLanguagePreference: cp.AltLanguagePreference,
-		altMerchantName:       cp.AltMerchantName,
-		altMerchantCity:       cp.AltMerchantCity,
+		merchantName:          info.MerchantName,
+		merchantCity:          info.MerchantCity,
+		categoryCode:          info.MerchantCategoryCode,
+		currency:              info.Currency,
+		amount:                info.Amount,
+		expiration:            info.ExpirationTimestamp,
+		upiAccountInfo:        info.UPIAccountInfo,
+		billNumber:            info.BillNumber,
+		mobileNumber:          info.MobileNumber,
+		storeLabel:            info.StoreLabel,
+		terminalLabel:         info.TerminalLabel,
+		purpose:               info.Purpose,
+		altLanguagePreference: info.AltLanguagePreference,
+		altMerchantName:       info.AltMerchantName,
+		altMerchantCity:       info.AltMerchantCity,
 	}), nil
 }
 
 // generateMerchant builds a KHQR payload for a merchant payment.
 func generateMerchant(info *MerchantInfo) (*Data, error) {
-	cp := *info // shallow copy to avoid mutating caller's struct
-	if cp.Currency == 0 {
-		cp.Currency = KHR
+	if info.Currency == 0 {
+		info.Currency = KHR
 	}
-	if cp.MerchantCategoryCode == "" {
-		cp.MerchantCategoryCode = defaultMerchantCategoryCode
+	if info.MerchantCategoryCode == "" {
+		info.MerchantCategoryCode = defaultMerchantCategoryCode
 	}
 
-	if err := cp.validate(); err != nil {
+	if err := info.validate(); err != nil {
 		return nil, err
 	}
 
 	// Build merchant account subtags (tag 30)
 	var acc strings.Builder
-	acc.WriteString(encodeTLV(subtagGlobalID, cp.BakongAccountID))
-	acc.WriteString(encodeTLV(subtagMerchantID, cp.MerchantID))
-	acc.WriteString(encodeTLV(subtagAcquiringBank, cp.AcquiringBank))
+	acc.WriteString(encodeTLV(subtagGlobalID, info.BakongAccountID))
+	acc.WriteString(encodeTLV(subtagMerchantID, info.MerchantID))
+	acc.WriteString(encodeTLV(subtagAcquiringBank, info.AcquiringBank))
 
 	return generate(&qrParams{
 		accountTag:            tagMerchantAccount,
 		accountValue:          acc.String(),
-		merchantName:          cp.MerchantName,
-		merchantCity:          cp.MerchantCity,
-		categoryCode:          cp.MerchantCategoryCode,
-		currency:              cp.Currency,
-		amount:                cp.Amount,
-		expiration:            cp.ExpirationTimestamp,
-		upiAccountInfo:        cp.UPIAccountInfo,
-		billNumber:            cp.BillNumber,
-		mobileNumber:          cp.MobileNumber,
-		storeLabel:            cp.StoreLabel,
-		terminalLabel:         cp.TerminalLabel,
-		purpose:               cp.Purpose,
-		altLanguagePreference: cp.AltLanguagePreference,
-		altMerchantName:       cp.AltMerchantName,
-		altMerchantCity:       cp.AltMerchantCity,
+		merchantName:          info.MerchantName,
+		merchantCity:          info.MerchantCity,
+		categoryCode:          info.MerchantCategoryCode,
+		currency:              info.Currency,
+		amount:                info.Amount,
+		expiration:            info.ExpirationTimestamp,
+		upiAccountInfo:        info.UPIAccountInfo,
+		billNumber:            info.BillNumber,
+		mobileNumber:          info.MobileNumber,
+		storeLabel:            info.StoreLabel,
+		terminalLabel:         info.TerminalLabel,
+		purpose:               info.Purpose,
+		altLanguagePreference: info.AltLanguagePreference,
+		altMerchantName:       info.AltMerchantName,
+		altMerchantCity:       info.AltMerchantCity,
 	}), nil
 }
 
