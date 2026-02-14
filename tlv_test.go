@@ -5,52 +5,90 @@ import (
 	"testing"
 )
 
-func TestEncodeTLV(t *testing.T) {
+func Test_encodeTLV(t *testing.T) {
 	tests := []struct {
-		tag, value, expected string
+		name  string
+		tag   string
+		value string
+		want  string
 	}{
-		{"00", "01", "000201"},
-		{"59", "John Smith", "5910John Smith"},
-		{"58", "KH", "5802KH"},
+		{"empty value", "00", "", "0000"},
+		{"single char", "01", "A", "0101A"},
+		{"single digit length", "02", "hi", "0202hi"},
+		{"double digit length", "03", "0123456789", "03100123456789"},
 	}
 
 	for _, tt := range tests {
-		result := encodeTLV(tt.tag, tt.value)
-		if result != tt.expected {
-			t.Errorf("encodeTLV(%q, %q) = %q, expected %q", tt.tag, tt.value, result, tt.expected)
-		}
+		t.Run(tt.name, func(t *testing.T) {
+			got := encodeTLV(tt.tag, tt.value)
+			if got != tt.want {
+				t.Errorf("encodeTLV(%q, %q): got %q, want %q", tt.tag, tt.value, got, tt.want)
+			}
+		})
 	}
 }
 
-func TestParseTLV(t *testing.T) {
-	entries, err := parseTLV("000201")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(entries) != 1 {
-		t.Fatalf("expected 1 entry, got %d", len(entries))
-	}
-	if entries[0].Tag != "00" || entries[0].Value != "01" {
-		t.Errorf("unexpected entry: %+v", entries[0])
+func Test_parseTLV(t *testing.T) {
+	tests := []struct {
+		name string
+		data string
+		want []tlvEntry
+	}{
+		{
+			"single entry",
+			"0103abc",
+			[]tlvEntry{{Tag: "01", Value: "abc"}},
+		},
+		{
+			"multiple entries",
+			"0103abc" + "0202hi" + "0301X",
+			[]tlvEntry{
+				{Tag: "01", Value: "abc"},
+				{Tag: "02", Value: "hi"},
+				{Tag: "03", Value: "X"},
+			},
+		},
+		{
+			"empty value",
+			"0100",
+			[]tlvEntry{{Tag: "01", Value: ""}},
+		},
 	}
 
-	entries, err = parseTLV("000201" + "010212" + "5802KH")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(entries) != 3 {
-		t.Fatalf("expected 3 entries, got %d", len(entries))
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := parseTLV(tt.data)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if len(got) != len(tt.want) {
+				t.Fatalf("got %d entries, want %d", len(got), len(tt.want))
+			}
+			for i := range tt.want {
+				if got[i] != tt.want[i] {
+					t.Errorf("entry[%d]: got %+v, want %+v", i, got[i], tt.want[i])
+				}
+			}
+		})
 	}
 }
 
-func TestParseTLVInvalid(t *testing.T) {
-	_, err := parseTLV("00")
-	if !errors.Is(err, ErrInvalidQR) {
-		t.Errorf("expected ErrInvalidQR, got %v", err)
+func Test_parseTLV_invalid(t *testing.T) {
+	tests := []struct {
+		name string
+		data string
+	}{
+		{"truncated header", "01"},
+		{"non-numeric length", "01XXa"},
+		{"length exceeds data", "0105ab"},
 	}
 
-	_, err = parseTLV("00XX01")
-	if !errors.Is(err, ErrInvalidQR) {
-		t.Errorf("expected ErrInvalidQR, got %v", err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			_, err := parseTLV(tt.data)
+			if !errors.Is(err, ErrInvalidQR) {
+				t.Errorf("got %v, want ErrInvalidQR", err)
+			}
+		})
 	}
 }

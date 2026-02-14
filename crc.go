@@ -1,15 +1,9 @@
 package khqr
 
-import (
-	"fmt"
-	"regexp"
-	"strings"
-)
+import "fmt"
 
 // crcTable is a pre-computed CRC-16-CCITT lookup table (polynomial 0x1021).
 var crcTable [256]uint16
-
-var crcFormatRegex = regexp.MustCompile(`6304[A-Fa-f0-9]{4}$`)
 
 func init() {
 	for i := range 256 {
@@ -38,21 +32,4 @@ func crc16(data []byte) uint16 {
 // as a 4-character uppercase hexadecimal string.
 func crc16Hex(data string) string {
 	return fmt.Sprintf("%04X", crc16([]byte(data)))
-}
-
-// verifyCRC validates the CRC format and checksum of a KHQR string.
-// On success it returns the QR data without the CRC suffix (last 8 chars)
-// and the 4-character CRC value.
-func verifyCRC(qr string) (dataWithoutCRC, crcValue string, err error) {
-	if !crcFormatRegex.MatchString(qr) {
-		return "", "", ErrCRCInvalid
-	}
-
-	crcValue = qr[len(qr)-4:]
-	dataForCRC := qr[:len(qr)-4]
-	if !strings.EqualFold(crc16Hex(dataForCRC), crcValue) {
-		return "", "", ErrCRCInvalid
-	}
-
-	return qr[:len(qr)-8], crcValue, nil
 }
